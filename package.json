@@ -1,0 +1,22 @@
+{
+  "name": "vs-music",
+  "version": "1.0.0",
+  "description": "VorteK music bot",
+  "main": "dist/bot/index.js",
+  "author": "ThatAnonymousG",
+  "license": "MIT",
+  "dependencies": {
+    "@anonymousg/lavajs": "^3.4.2",
+    "@types/ms": "^0.7.31",
+    "chalk": "^4.1.0",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "mongodb": "^3.5.9",
+    "ms": "^2.1.2",
+    "typeorm": "^0.2.24"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.13",
+    "@types/ws": "^7.2.6"
+  }
+}
