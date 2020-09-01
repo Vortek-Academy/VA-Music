@@ -12,7 +12,7 @@ import { Snowflake } from "discord.js";
 export class GuildEntity extends BaseEntity {
   @ObjectIdColumn() public _id?: ObjectID;
   @PrimaryColumn() public id: Snowflake;
-  @Column() public prefix: string = "!";
+  @Column() public prefix: string = "-";
 
   constructor(id: Snowflake) {
     super();

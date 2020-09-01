@@ -7,6 +7,8 @@ export default class extends Command {
       aliases: ["re"],
       description: "Set repeat for track or queue or disable both",
       usage: "[track | queue]",
+      botPerms: ["CONNECT", "SPEAK"],
+      userPerms: ["CONNECT"],
     });
   }
 

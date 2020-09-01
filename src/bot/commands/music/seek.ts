@@ -9,6 +9,8 @@ export default class extends Command {
       aliases: ["goto"],
       description: "Seek the track",
       usage: "<Timestamp>",
+      botPerms: ["CONNECT", "SPEAK"],
+      userPerms: ["CONNECT"],
     });
   }
 

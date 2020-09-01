@@ -17,17 +17,4 @@ export class Bot extends BaseManager {
       commands: __dirname + "/../../bot/commands",
     });
   }
-
-  public botReload() {
-    this.destroy();
-    this.botStart();
-  }
-
-  public botStop() {
-    try {
-      process.exit();
-    } catch (e) {
-      this.utils.log(e.message, "error");
-    }
-  }
 }

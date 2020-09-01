@@ -4,7 +4,10 @@ import { Message } from "discord.js";
 export default class extends Command {
   constructor() {
     super("pause", {
+      aliases: ["p"],
       description: "Pause the song",
+      botPerms: ["CONNECT", "SPEAK"],
+      userPerms: ["CONNECT"],
     });
   }
 

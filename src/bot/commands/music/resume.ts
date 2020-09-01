@@ -6,6 +6,8 @@ export default class extends Command {
     super("resume", {
       aliases: ["res"],
       description: "Resume the song",
+      botPerms: ["CONNECT", "SPEAK"],
+      userPerms: ["CONNECT"],
     });
   }
 

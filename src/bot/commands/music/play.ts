@@ -5,7 +5,6 @@ import { Utils } from "@anonymousg/lavajs";
 export default class extends Command {
   constructor() {
     super("play", {
-      aliases: ["p"],
       description: "Play a music track",
       usage: ["<Song Name>", "<Song Link>"].join("\n"),
       botPerms: ["CONNECT", "SPEAK"],

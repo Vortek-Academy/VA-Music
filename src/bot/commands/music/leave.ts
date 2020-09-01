@@ -6,6 +6,8 @@ export default class extends Command {
     super("leave", {
       aliases: ["stop", "exit"],
       description: "Leave voice channel",
+      botPerms: ["CONNECT", "SPEAK"],
+      userPerms: ["CONNECT"],
     });
   }
 

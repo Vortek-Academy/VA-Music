@@ -1,7 +1,7 @@
 {
-  "name": "vs-music",
+  "name": "va-music",
   "version": "1.0.0",
-  "description": "VorteK music bot",
+  "description": "VorteK Academy music bot",
   "main": "dist/bot/index.js",
   "author": "ThatAnonymousG",
   "license": "MIT",
