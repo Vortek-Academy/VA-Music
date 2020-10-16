@@ -1,71 +1,73 @@
 import { Command } from "../../../lib";
 import { Message, TextChannel } from "discord.js";
-import { Utils } from "@anonymousg/lavajs";
 
 export default class extends Command {
-  constructor() {
-    super("play", {
-      description: "Play a music track",
-      usage: ["<Song Name>", "<Song Link>"].join("\n"),
-      botPerms: ["CONNECT", "SPEAK"],
-      userPerms: ["CONNECT"],
-    });
-  }
+	constructor() {
+		super("play", {
+			description: "Play a music track",
+			usage: ["<Song Name>", "<Song Link>"].join("\n"),
+			botPerms: ["CONNECT", "SPEAK"],
+			userPerms: ["CONNECT"],
+		});
+	}
 
-  async run(message: Message, args: string[]) {
-    const { channel } = message.member!.voice;
-    if (!channel) return message.em(`You need to be in a voice channel!`);
+	async run(message: Message, args: string[]) {
+		const { channel } = message.member!.voice;
+		if (!channel) return message.em(`You need to be in a voice channel!`);
 
-    const player = this.bot!.music!.spawnPlayer(
-      {
-        guild: message.guild!,
-        textChannel: message.channel as TextChannel,
-        voiceChannel: channel,
-      },
-      {
-        repeatQueue: false,
-        repeatTrack: false,
-        skipOnError: true,
-      }
-    );
+		const player = this.bot!.music!.spawnPlayer({
+			guild: message.guild!.id,
+			textChannel: message.channel.id,
+			voiceChannel: channel.id,
+			deafen: true,
+			mute: false,
+			volume: 100,
+		});
+		const queue = this.bot!.musicQueue.get(message.guild!.id);
 
-    if (!args[0]) return await message.em(`Please enter a song name or link!`);
-    const trackQuery = args.join(" ");
-    let track;
+		if (!args[0]) return await message.em(`Please enter a song name or link!`);
+		const trackQuery = args.join(" ");
 
-    try {
-      track = await player.lavaSearch(trackQuery, message.member!, {
-        source: "yt",
-        add: false,
-      });
-    } catch (e) {
-      if (e)
-        return await message.em(
-          `No songs found for the following query: \`${trackQuery}\`!`
-        );
-    }
+		try {
+			const track = await this.bot!.music!.search(trackQuery, {
+				source: "yt",
+				user: message.author.id,
+			});
+			if (track.length === 0)
+				return await message.em(
+					`No songs found for the following query: \`${trackQuery}\`!`
+				);
 
-    if (Array.isArray(track)) {
-      player.queue.add(track[0]);
-      await message.em(
-        [
-          `Track added to queue!`,
-          `- Name: [${track[0].title}](${track[0].uri})`,
-          `- Duration: ${Utils.formatTime(track[0].length)}`,
-        ].join("\n")
-      );
-    } else if (track) {
-      player.queue.add(track.tracks);
-      await message.em(
-        [
-          `Playlist added to queue!`,
-          `- Name: ${track.name}`,
-          `- Tracks: ${track.trackCount}`,
-          `- Duration: ${Utils.formatTime(track.duration)}`,
-        ].join("\n")
-      );
-    }
+			if (track!.every((x) => x.playlist)) {
+				queue!.tracks.push(...track);
+				await message.em(
+					[
+						`Playlist added to queue!`,
+						`- Name: ${track[0].playlist}`,
+						`- Tracks: ${track.length}`,
+						`- Duration: ${track.reduce(
+							(acc, val) => acc + val.info.length,
+							0
+						)}`,
+					].join("\n")
+				);
+			} else if (track) {
+				queue!.tracks.push(track[0]);
+				await message.em(
+					[
+						`Track added to queue!`,
+						`- Name: [${track[0].info.title}](${track[0].info.uri})`,
+						`- Duration: ${track[0].info.length}`,
+					].join("\n")
+				);
+			}
+		} catch (e) {
+			if (e)
+				return await message.em(
+					`No songs found for the following query: \`${trackQuery}\`!`
+				);
+		}
 
-    if (!player.playing) player.play();
-  }
+		if (!player.trackLoaded) player.play(queue!.tracks[0], {});
+	}
 }

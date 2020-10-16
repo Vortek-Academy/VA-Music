@@ -1,26 +1,25 @@
 require("dotenv").config({
-  path: __dirname + "/../../../.env",
+	path: __dirname + "/../../../.env",
 });
 import config from "../../config.json";
-import { NodeOptions } from "@anonymousg/lavajs";
+import { INodeOptions } from "playlink";
 
 export interface IConfigOptions {
-  token: string;
-  mongo: string;
-  prefix: string;
-  node: NodeOptions[];
+	token: string;
+	prefix: string;
+	node: INodeOptions[];
 }
 
 export class Config {
-  public config: IConfigOptions;
-  public type: "dev" | "prod";
+	public config: IConfigOptions;
+	public type: "dev" | "prod";
 
-  constructor() {
-    this.type = process.env.TYPE as "dev" | "prod";
-    this.config = config[this.type];
-  }
+	constructor() {
+		this.type = process.env.TYPE as "dev" | "prod";
+		this.config = config[this.type];
+	}
 
-  get(locale: "token" | "mongo" | "prefix" | "node" = "token") {
-    return this.config[locale];
-  }
+	get(locale: "token" | "prefix" | "node" = "token") {
+		return this.config[locale];
+	}
 }
